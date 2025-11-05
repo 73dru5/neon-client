@@ -1,4 +1,11 @@
 <h1>Welcome</h1>
-<p><%= @message %>b</p>
+
+<% 5.times do |i| %>
+    <p><%= @message %> <%= i + 101 %></p>
+<% end %>
+
+<br>
+<h2 style="padding-left:3rem">Identification Number: <%= @id %></h2>
+
 <h2>Database Version</h2>
 <p><%= @version %>
