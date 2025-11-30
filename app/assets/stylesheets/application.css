@@ -13,15 +13,14 @@
  *= require_tree .
  *= require_self
  */
- body {
+ .login-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    
  }
 
-.container {
+.login-inner-container {
     width: 50%;
     height: 50%;
     background-color: beige;

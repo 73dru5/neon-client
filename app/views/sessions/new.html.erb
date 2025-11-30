@@ -1,0 +1,10 @@
+<div class="login-container">
+    <div class="login-inner-container">
+        <h2><%= @msg %></h2>
+        <form class="login-form" method="POST" action="/login">
+            <input type="text" placeholder="Username" name="username"/>
+            <input type="password" placeholder="Password" name="password"/>
+            <input type="submit" value="Log in">
+        </form>
+    </div>
+</div>
