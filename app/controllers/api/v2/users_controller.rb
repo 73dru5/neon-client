@@ -1,7 +1,8 @@
 module Api::V2
-  class UsersController < ::ApplicationController
+  class UsersController < ApplicationController
     def me
-      render json: current_user, status: :ok
+      user = User.find_by!(name: 'phaeddrus')
+      render json: user, status: :ok
     end
 
     def organizations

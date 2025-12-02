@@ -2,15 +2,17 @@ module Api::V2
   class ApplicationController < ActionController::API
     include ActionController::MimeResponds
     include ActionController::Helpers
-    include DeviceTokenAuth::Concerns::SetUserByToken
-    include Pundit::Authorization
+    # include DeviceTokenAuth::Concerns::SetUserByToken
+    # include Pundit::Authorization
 
-    rescue_from ActiveRecord::RecordNotFound, with: :not_found
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      render json: { message: 'record not found' }
+    end
     rescue_from ActiveRecord::RecordInvalid, with: :uprocessable_entity
-    rescue_from Pundit::NotAuthorizedError, with: :forbidden
+    # rescue_from Pundit::NotAuthorizedError, with: :forbidden
 
-    before_action :authenticate_user!
-    before_action :set_default_format
+    # before_action :authenticate_user!
+    # before_action :set_default_format
 
     private
 
