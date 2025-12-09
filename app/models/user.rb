@@ -1,3 +1,4 @@
 class User < ApplicationRecord
-  # hello
+  self.primary_key = :id
+  has_many :api_keys, dependent: :destroy
 end

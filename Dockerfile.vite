@@ -1,0 +1,14 @@
+FROM node:20
+
+WORKDIR /app/frontend
+
+# Install dependencies first (cached)
+COPY app/frontend/package.json app/frontend/package-lock.json ./
+RUN npm install
+
+# Copy the rest of the SPA
+COPY app/frontend .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

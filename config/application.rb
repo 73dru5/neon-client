@@ -25,3 +25,27 @@ module NeonClient
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+module JsonExceptionHandler
+  def self.included(base)
+    base.rescue_from StandardError, with: :render_error_response if Rails.env.development? || Rails.env.test?
+  end
+
+  private
+
+  def render_error_response(exception)
+    status = case exception
+    when ActionController::ParameterMissing then 400
+    when ActiveRecord::RecordNotFound      then 404
+    when ActiveRecord::RecordInvalid       then 422
+    else 500
+    end
+
+    render json: {
+      error: {
+        message: exception.message,
+        backtrace: Rails.backtrace_cleaner.clean(exception.backtrace)
+      }
+    }, status: status
+  end
+end

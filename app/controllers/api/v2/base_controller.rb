@@ -2,8 +2,7 @@ module Api::V2
   class BaseController < ActionController::API
     include ActionController::MimeResponds
     include ActionController::Helpers
-    # include DeviceTokenAuth::Concerns::SetUserByToken
-    # include Pundit::Authorization
+    include JsonExceptionHandler
 
     before_action :authenticate_api_key!
 
@@ -12,10 +11,6 @@ module Api::V2
     end
 
     rescue_from ActiveRecord::RecordInvalid, with: :uprocessable_entity
-    # rescue_from Pundit::NotAuthorizedError, with: :forbidden
-
-    # before_action :authenticate_user!
-    # before_action :set_default_format
 
     private
 
@@ -28,9 +23,15 @@ module Api::V2
 
       token = auth.split(" ", 2).last
 
-      unless valid_api_key?(token)
+      @api_key = ApiKey.find_by!(token: token)
+
+      unless @api_key
         render json: { error: "invalid api key" }, status: :unauthorized
       end
+
+      @api_key.update_column(:last_used_at, Time.current)
+
+      @current_user = @api_key.user
     end
 
     def valid_api_key?(token)

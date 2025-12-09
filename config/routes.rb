@@ -4,9 +4,8 @@ Rails.application.routes.draw do
       # resources :users, only: [ :show, :update ]
       get "/users/me", to: "users#me"
       get "/users/organizations", to: "users#organizations"
+      post "/api_keys", to: "keys#create"
     end
   end
-  root "pages#home"
-  get "login" => "sessions#new"
-  post "login" => "sessions#create"
+  root "home#index"
 end

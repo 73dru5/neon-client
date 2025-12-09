@@ -1,0 +1,26 @@
+services:
+
+  rails:
+    build: .
+    command: bundle exec rails s -b 0.0.0.0 -p 3000
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://neondb_owner:npg_WyIN9ZQeYgt1@ep-nameless-morning-ah5szf08-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile.vite
+    volumes:
+      - ./app/frontend:/app/frontend
+    ports:
+      - "5173:5173"
+    environment:
+      HOST: 0.0.0.0
+
+volumes:
+  db-data:
