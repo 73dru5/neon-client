@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     environment:
       RAILS_ENV: development
-      DATABASE_URL: postgresql://neondb_owner:npg_WyIN9ZQeYgt1@ep-nameless-morning-ah5szf08-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      # DATABASE_URL: 
 
   vite:
     build:
