@@ -2,15 +2,21 @@ module Api::V2
   class BaseController < ActionController::API
     include ActionController::MimeResponds
     include ActionController::Helpers
-    include JsonExceptionHandler
 
     before_action :authenticate_api_key!
+    before_action :ensure_json_request
 
-    rescue_from ActiveRecord::RecordNotFound do |exception|
+    rescue_from ActiveRecord::RecordNotFound do
       render json: { message: "record not found" }
     end
 
-    rescue_from ActiveRecord::RecordInvalid, with: :uprocessable_entity
+    rescue_from ActiveRecord::RecordNotUnique do
+      render json: { message: "record not unique" }, status: :unprocessable_entity
+    end
+
+    rescue_from ActiveRecord::RecordInvalid do
+      render json: { message: "record invalid", request_id: request.request_id }, status: :conflict
+    end
 
     private
 
@@ -34,24 +40,8 @@ module Api::V2
       @current_user = @api_key.user
     end
 
-    def valid_api_key?(token)
-      ActiveSupport::SecurityUtils.secure_compare(token, ENV["API_KEY"])
-    end
-
-    def set_default_format
-      request.format = :json if request.headers["HTTP_ACCEPT"].nil? && params[:format].nil?
-    end
-
-    def not_found
-      render json: { error: exception.message }, status: :not_found
-    end
-
-    def uprocessable_entity(exception)
-      render json: { errors: exception.record.errors.full_messages }, status: :uprocessable_entity
-    end
-
-    def forbidden
-      render json: { error: "Forbidden" }, status: :forbidden
+    def ensure_json_request
+      request.format = :json
     end
   end
 end

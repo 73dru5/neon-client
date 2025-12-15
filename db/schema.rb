@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_09_185248) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_11_182303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_185248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_api_keys_on_key", unique: true
+    t.index ["name"], name: "index_api_keys_on_name_unique", unique: true
   end
 
   create_table "employees", primary_key: "employee_id", id: :serial, force: :cascade do |t|

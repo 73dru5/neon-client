@@ -1,25 +1,27 @@
 module Api::V2
-  class KeyController < BaseController
+  class KeysController < BaseController
     skip_before_action :authenticate_api_key!, only: :create
-    def create
-      # Auto-create table if it doesn't exist (great for fresh dev environments)
-      unless ActiveRecord::Base.connection.table_exists?("api_keys")
-        ActiveRecord::Migrator.migrate("db/migrate")
-      end
 
-      api_key = ApiKey.create!(
-        name: key_params[:key_name].presence,
+    # rescue_from ActiveRecord::RecordNotUnique do |exception|
+    #   render json: { message: "choose another unique name for api key" }
+    # end
+
+
+
+    rescue_from ::ApiErrors::ApiKeyNameTaken do
+      render json: { request_id: request.request_id, message: "choose another unique name for api key" }, status: :conflict
+    end
+
+
+    def create
+      api_key = ApiKeys::CreateApiKey.call(
+        name: params[:key_name],
         created_by: "user"
       )
-
       render json: api_key_response(api_key), status: :created
     end
 
     private
-
-    def key_params
-      params.permit(:key_name)
-    end
 
     def api_key_response(api_key)
       {
