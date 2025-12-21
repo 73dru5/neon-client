@@ -7,7 +7,7 @@ module Api::V2
     before_action :ensure_json_request
 
     rescue_from ActiveRecord::RecordNotFound do
-      render json: { message: "record not found" }
+      render json: { message: "record not found" }, status: :not_found
     end
 
     rescue_from ActiveRecord::RecordNotUnique do

@@ -7,5 +7,11 @@ Rails.application.routes.draw do
       post "/api_keys", to: "keys#create"
     end
   end
+
+  get "/login", to: "sessions#new"
+  get "/auth/keycloak/callback", to: "sessions#create"
+  get "/auth/failure", to: redirect("/")
+  delete "/logout", to: "sessions#destroy"
+
   root "home#index"
 end

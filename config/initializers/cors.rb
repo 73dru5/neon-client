@@ -3,7 +3,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   # 1. Configuration for Local Development
   allow do
-    # The URL of your React/SPA dev server (e.g., typically port 3000 or 5173 for Vite)
+    # The URL of your React/SPA dev server
     origins "http://localhost:5173"
 
     resource "*", # This applies to all API routes
