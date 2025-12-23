@@ -34,13 +34,13 @@ class KeycloakAuth
       site: "#{ENV['KEYCLOAK_SITE']}/realms/#{ENV['KEYCLOAK_REALM']}",
       token_url: "/protocol/openid-connect/token"
     )
-    token = OAuth2::AccessToken.new(client, "", refresh_token: refresh_toekn)
+    token = OAuth2::AccessToken.new(client, "", refresh_token: refresh_token)
     refreshed = token.refresh!.params # Returns hash with access_token, refresh_token
     { "AccessToken" => refreshed["access_token"], "RefreshToken" => refreshed["refresh_token"] }
   end
 
   def update_cookie(env, refreshed)
-    response = Rack :Response.new
+    response = Rack::Response.new
     encoded = URI.encode_www_form_component(refreshed.to_json)
     response.set_cookie("keycloak_token", { value: encoded, path: "/", same_site: :lax })
     env["HTTP_COOKIE"] = response.headers["Set-Cookie"]

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if auth
       token_data = {
         AccessToken: auth.credentials.token,
-        RefreshToken: auth.credentials.token
+        RefreshToken: auth.credentials.refresh_token
       }
       encoded_token = URI.encode_www_form_component(token_data.to_json)
       cookies[:keycloak_token] = { value: encoded_token, path: "/", same_site: :lax }
