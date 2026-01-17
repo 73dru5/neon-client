@@ -1,0 +1,33 @@
+{
+    "exp": 1768580143,
+    "iat": 1768579843,
+    "auth_time": 1768577625,
+    "jti": "onrtac:e030eddc-bee0-1144-428d-89b962b60405",
+    "iss": "http://localhost:9000/realms/prod-realm",
+    "aud": "account",
+    "sub": "bf0ec740-4ccb-497f-aba9-5751487315a8",
+    "typ": "Bearer",
+    "azp": "neon-console",
+    "sid": "85b14fbd-72ef-90f5-4e61-aaa0045ec3bb",
+    "acr": "0",
+    "allowed-origins": ["http://localhost:3000"],
+    "realm_access": {
+        "roles": [
+            "default-roles-prod-realm",
+            "offline_access",
+            "uma_authorization"
+        ]
+    },
+    "resource_access": {
+        "account": {
+            "roles": ["manage-account", "manage-account-links", "view-profile"]
+        }
+    },
+    "scope": "openid profile email",
+    "email_verified": false,
+    "name": "nick dick",
+    "preferred_username": "nick",
+    "given_name": "nick",
+    "family_name": "dick",
+    "email": "nick@example.com"
+}

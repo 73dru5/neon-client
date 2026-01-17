@@ -8,10 +8,12 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/login", to: "sessions#new"
+  get "/sign_in", to: "sessions#new"
+  get "/sign_out", to: "sessions#destroy"
   get "/auth/keycloak/callback", to: "sessions#create"
   get "/auth/failure", to: redirect("/")
-  delete "/logout", to: "sessions#destroy"
+  get "/authentication_success", to: "sessions#success"
+  # delete "/logout", to: "sessions#destroy"
 
   root "home#index"
 end

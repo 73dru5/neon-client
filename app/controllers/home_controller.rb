@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
+  include Authentication
+
   def index
-    render file: Rails.public_path.join("index.html"), layout: false
+    # To do: maybe some SPA, no?
   end
 end
