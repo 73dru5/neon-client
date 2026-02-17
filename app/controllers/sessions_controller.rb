@@ -21,6 +21,8 @@ class SessionsController < ApplicationController
   def create
     auth = request.env["omniauth.auth"]
     if auth
+
+      user_email = auth.info.email
       token_data = {
         AccessToken: auth.credentials.token,
         RefreshToken: auth.credentials.refresh_token
@@ -31,7 +33,9 @@ class SessionsController < ApplicationController
       session[:user_id] = auth.user_id
       session[:user_info] = auth.info
 
-      redirect_to "/authentication_success"
+      render json: auth.to_h
+
+      # redirect_to "/authentication_success"
     else
       redirect_to root_path
     end
