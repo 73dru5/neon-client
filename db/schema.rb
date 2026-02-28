@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 0) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_25_170013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "playing_with_neon", id: :serial, force: :cascade do |t|
-    t.text "name", null: false
-    t.float "value", limit: 24
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email", null: false
+    t.string "image"
+    t.string "name"
+    t.string "last_name"
+    t.string "plan", default: "free"
+    t.integer "active_seconds_limit", default: 0
+    t.integer "projects_limit", default: 0
+    t.integer "branches_limit", default: 0
+    t.integer "max_autoscaling_limit", default: 0
+    t.jsonb "auth_accounts", default: []
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 end

@@ -6,6 +6,8 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+
+
 module NeonClient
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -26,6 +28,9 @@ module NeonClient
 
     config.autoload_paths << Rails.root.join("app/errors")
     config.eager_load_paths << Rails.root.join("app/errors")
+
+    # Don't store anything in a session cookie
+    # config.session_store :disabled
   end
 end
 

@@ -19,10 +19,11 @@ class SessionsController < ApplicationController
   end
 
   def create
+    # debugger
     auth = request.env["omniauth.auth"]
-    if auth
 
-      user_email = auth.info.email
+    # Set the keycloak_token cookie
+    if auth
       token_data = {
         AccessToken: auth.credentials.token,
         RefreshToken: auth.credentials.refresh_token
@@ -30,14 +31,36 @@ class SessionsController < ApplicationController
       encoded_token = URI.encode_www_form_component(token_data.to_json)
       cookies[:keycloak_token] = { value: encoded_token, path: "/", same_site: :lax }
 
-      session[:user_id] = auth.user_id
-      session[:user_info] = auth.info
+      # Initialize the session oject if you want
+      # session[:user_id] = auth.user_id
+      # session[:user_info] = auth.info
+
+      # To expose the content of the auth hash
+      # auth_json = auth.to_json
+      # puts auth_json
+
+      email = auth.info.email
+
+      @user = User.find_or_initialize_by(email: email)
+      debugger
+      if @user.new_record?
+        info = auth.info
+        auth_account = {
+          uid: auth.uid,
+          provider: auth.provider,
+          name: info.name,
+          image: "",
+          login: auth.name,
+          email: info.email
+        }
+        @user.add_auth_account(auth_account)
+      else
+        redirect_to root_path
+
+      end
+
 
       render json: auth.to_h
-
-      # redirect_to "/authentication_success"
-    else
-      redirect_to root_path
     end
   end
 
